@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TICKBITAI</title>
+    <script src="https://telegram.org"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: linear-gradient(180deg, #3b1cba 0%, #7633ff 50%, #f4f6fb 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-bottom: 80px; }
+        .header { width: 100%; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #fff; background: #aaa; }
+        .user-meta p { font-size: 11px; opacity: 0.8; }
+        .user-meta h3 { font-size: 18px; font-weight: 600; }
+        .top-actions { display: flex; justify-content: space-around; width: 90%; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 25px; padding: 8px; margin-top: 10px; }
+        .action-btn { background: #fff; color: #000; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        .stats-badge { color: #fff; display: flex; align-items: center; gap: 5px; font-size: 14px; font-weight: bold; }
+        .mining-card { background: linear-gradient(135deg, #512da8 0%, #673ab7 100%); width: 90%; border-radius: 20px; padding: 20px; margin-top: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .mining-card p { font-size: 12px; opacity: 0.9; }
+        .main-balance { font-size: 32px; font-weight: bold; margin: 5px 0 15px 0; letter-spacing: 0.5px; }
+        .claim-row { display: flex; align-items: center; justify-content: space-between; }
+        .claim-btn { background: #fff; color: #3b1cba; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .mining-rate { font-size: 12px; opacity: 0.8; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #e0e0e0; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #8e8e93; text-decoration: none; font-size: 11px; gap: 4px; }
+        .nav-item.active { color: #3b1cba; }
+        .nav-item i { font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="user-info">
+            <div class="avatar"></div>
+            <div class="user-meta"><p>Your AI agent is running!</p><h3 id="username">User</h3></div>
+        </div>
+        <div><h3 style="font-style: italic; font-weight: 800;">TickAI</h3></div>
+    </div>
+    <div class="top-actions">
+        <button class="action-btn"><i class="fa-solid fa-plus-circle" style="color: #4f46e5;"></i> Deposit</button>
+        <div class="stats-badge"><i class="fa-solid fa-t" style="color: #26a69a;"></i> <span>337.52</span></div>
+        <button class="action-btn"><i class="fa-solid fa-money-bill-transfer" style="color: #4f46e5;"></i> Withdraw</button>
+    </div>
+    <div class="mining-card">
+        <p>Your profit</p>
+        <div class="main-balance">$<span id="profit-counter">8.09409490</span></div>
+        <div class="claim-row">
+            <button class="claim-btn" onclick="claimProfit()">+ CLAIM PROFIT</button>
+            <div class="mining-rate">+0.4463 per hour</div>
+        </div>
+    </div>
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-users"></i><span>Referrals</span></a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+    </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
+        }
+        let currentProfit = 8.0940949;
+        const profitRatePerSecond = 0.4463 / 3600;
+        setInterval(() => {
+            currentProfit += (profitRatePerSecond / 10);
+            document.getElementById('profit-counter').innerText = currentProfit.toFixed(8);
+        }, 100);
+        function claimProfit() {
+            alert("Profit Claimed: $" + currentProfit.toFixed(4));
+            currentProfit = 0.00000000;
+        }
+    </script>
+</body>
+</html>
